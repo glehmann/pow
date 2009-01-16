@@ -51,7 +51,7 @@ public:
     }
   inline TOutput operator()( const TInput1 & A, const TInput2 & B)
     {
-    return static_cast<TOutput>( vcl_pow( A, B ) );
+    return static_cast<TOutput>( vcl_pow( (double)A, (double)B ) );
     }
 }; 
 }

@@ -54,7 +54,7 @@ public:
     }
   inline TOutput operator()( const TInput & A )
     {
-    return static_cast<TOutput>( vcl_pow( A, m_Constant ) );
+    return static_cast<TOutput>( vcl_pow( (double)A, (double)m_Constant ) );
     }
   void SetConstant(TConstant ct) {this->m_Constant = ct; }
   const TConstant & GetConstant() const { return m_Constant; }

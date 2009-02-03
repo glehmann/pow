@@ -31,7 +31,7 @@ namespace itk
  * This filter is templated over the input image type
  * and the output image type.
  *
- * \author Gaëtan Lehmann. Biologie du Développement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \ingroup IntensityImageFilters  Multithreaded
  * \sa UnaryFunctorImageFilter

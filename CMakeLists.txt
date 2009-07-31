@@ -63,7 +63,11 @@ ENDIF(BUILD_WRAPPERS)
 
 IF(BUILD_TESTING)
 
-SET(CurrentExe "check")
+SET(CurrentExe "pow")
+ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+
+SET(CurrentExe "cpow")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
@@ -77,7 +81,14 @@ ENDIF(BUILD_TESTING)
 #any tests you can comment out or delete the following line.
 # ADD_TEST(Testname ExecutableToRun arg1 arg2 arg3)
 
-ADD_TEST(Test ${TEST_COMMAND}
-   check ${INPUT_IMAGE} out.png
-   --compare out.png ${CMAKE_CURRENT_SOURCE_DIR}/images/test.png
+ADD_TEST(Pow ${TEST_COMMAND}
+   pow ${CMAKE_CURRENT_SOURCE_DIR}/images/cthead1.png ${CMAKE_CURRENT_SOURCE_DIR}/images/3regions.png pow.png
+   --compare pow.png ${CMAKE_CURRENT_SOURCE_DIR}/images/pow.png
 )
+
+ADD_TEST(ConstantPow ${TEST_COMMAND}
+   cpow ${CMAKE_CURRENT_SOURCE_DIR}/images/cthead1.png cpow.png 2.0
+   --compare cpow.png ${CMAKE_CURRENT_SOURCE_DIR}/images/cpow.png
+)
+
+

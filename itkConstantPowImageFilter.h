@@ -63,7 +63,7 @@ public:
 };
 }
 
-template <class TInputImage, class TConstant, class TOutputImage>
+template <class TInputImage, class TConstant=double, class TOutputImage=TInputImage>
 class ITK_EXPORT ConstantPowImageFilter :
       public
 UnaryFunctorImageFilter<TInputImage,TOutputImage, 

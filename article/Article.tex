@@ -35,6 +35,14 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 % the relevant document. 
 \title{Exponentiation filters}
 
+% 
+% NOTE: This is the last number of the "handle" URL that 
+% The Insight Journal assigns to your paper as part of the
+% submission process. Please replace the number "1338" with
+% the actual handle number that you get assigned.
+%
+\newcommand{\IJhandlerIDnumber}{}
+
 % Increment the release number whenever significant changes are made.
 % The author and/or editor can define 'significant' however they like.
 % \release{0.00}
@@ -45,6 +53,15 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 \authoraddress{INRA, UMR 1198; ENVA; CNRS, FRE 2857, Biologie du D\'eveloppement et Reproduction, Jouy en Josas, F-78350, France.}
 
 \begin{document}
+
+
+%
+% Add hyperlink to the web location and license of the paper.
+% The argument of this command is the handler identifier given
+% by the Insight Journal to this paper.
+% 
+\IJhandlefooter{\IJhandlerIDnumber}
+
 \maketitle
 
 \ifhtml
@@ -57,6 +74,8 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 Two simple filters are contributed to compute the exponential of an image: the first one to raise the image to the power of a constant, the
 other one to raise the image to the power of the values provided in another image.
 \end{abstract}
+
+\IJhandlenote{\IJhandlerIDnumber}
 
 \tableofcontents
 

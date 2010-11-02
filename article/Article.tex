@@ -33,16 +33,16 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 
 % The title should be descriptive enough for people to be able to find
 % the relevant document. 
-\title{}
+\title{Exponentiation filters}
 
 % Increment the release number whenever significant changes are made.
 % The author and/or editor can define 'significant' however they like.
-\release{0.00}
+% \release{0.00}
 
 % At minimum, give your name and an email address.  You can include a
 % snail-mail address if you like.
-\author{}
-\authoraddress{}
+\author{Ga\"etan Lehmann}
+\authoraddress{INRA, UMR 1198; ENVA; CNRS, FRE 2857, Biologie du D\'eveloppement et Reproduction, Jouy en Josas, F-78350, France.}
 
 \begin{document}
 \maketitle
@@ -54,38 +54,117 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 
 \begin{abstract}
 \noindent
-% The abstract should be a paragraph or two long, and describe the
-% scope of the document.
+Two simple filters are contributed to compute the exponential of an image: the first one to raise the image to the power of a constant, the
+other one to raise the image to the power of the values provided in another image.
 \end{abstract}
 
 \tableofcontents
 
 
-% \url{http://www.itk.org}
-% \code{Insight/Documentation/Style.pdf}
-% \section{Principles of Solar Spot Detection}
-% \cite{ITKSoftwareGuide}.
-% \doxygen{ImageToImageFilter}
+\section{ConstantPowImageFilter}
 
-% \small \begin{verbatim}
-% \end{verbatim} \normalsize
+\verb$ConstantPowImageFilter$ raises the input image to the power of a constant provided by the user.
+Here is an example of usage:
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkSimpleFilterWatcher.h"
+
+#include "itkConstantPowImageFilter.h"
 
 
-% The {itemize} environment uses a bullet for each \item.  If you want the 
-% \item's numbered, use the {enumerate} environment instead.
-% \begin{itemize}
-%   \item  Insight Toolkit 2.4.
-%   \item  CMake 2.2
-% \end{itemize}
+int main(int argc, char * argv[])
+{
 
-% \ref{cthead1}
+  if( argc != 4 )
+    {
+    std::cerr << "usage: " << argv[0] << " intput output constant" << std::endl;
+    std::cerr << " input: the input image" << std::endl;
+    std::cerr << " output: the output image" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{cthead1}
-\caption{The input image.\label{cthead1}}
-\end{figure}
+  const int dim = 2;
+  
+  typedef unsigned char PType;
+  typedef itk::Image< PType, dim > IType;
+  typedef itk::Image< unsigned short, dim > OType;
 
+  typedef itk::ImageFileReader< IType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+
+  typedef itk::ConstantPowImageFilter< IType, double, OType > FilterType;
+  FilterType::Pointer filter = FilterType::New();
+  filter->SetInput( reader->GetOutput() );
+  filter->SetConstant( atof(argv[3]) );
+  itk::SimpleFilterWatcher watcher(filter, "filter");
+
+  typedef itk::ImageFileWriter< OType > WriterType;
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( filter->GetOutput() );
+  writer->SetFileName( argv[2] );
+  writer->Update();
+
+  return 0;
+}
+\end{verbatim} \normalsize
+
+\section{PowImageFilter}
+\verb$PowImageFilter$ raises the first input image to the power of the values of the second image. Here is an example of usage:
+\small \begin{verbatim}
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkSimpleFilterWatcher.h"
+
+#include "itkPowImageFilter.h"
+
+
+int main(int argc, char * argv[])
+{
+
+  if( argc != 4 )
+    {
+    std::cerr << "usage: " << argv[0] << " intput pow_input output" << std::endl;
+    std::cerr << " input: the input image" << std::endl;
+    std::cerr << " output: the output image" << std::endl;
+    // std::cerr << "  : " << std::endl;
+    exit(1);
+    }
+
+  const int dim = 2;
+  
+  typedef unsigned char PType;
+  typedef itk::Image< PType, dim > IType;
+  typedef itk::Image< unsigned short, dim > OType;
+
+  typedef itk::ImageFileReader< IType > ReaderType;
+  ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName( argv[1] );
+
+  ReaderType::Pointer reader2 = ReaderType::New();
+  reader2->SetFileName( argv[2] );
+
+  typedef itk::PowImageFilter< IType, IType, OType > FilterType;
+  FilterType::Pointer filter = FilterType::New();
+  filter->SetInput( reader->GetOutput() );
+  filter->SetInput( 1, reader2->GetOutput() );
+  itk::SimpleFilterWatcher watcher(filter, "filter");
+
+  typedef itk::ImageFileWriter< OType > WriterType;
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( filter->GetOutput() );
+  writer->SetFileName( argv[3] );
+  writer->Update();
+
+  return 0;
+}
+\end{verbatim} \normalsize
+
+\section{Wrapping}
+
+The wrappers for WrapITK for the two new filters are provided in the Wrapping directory.
 
 \appendix
 
